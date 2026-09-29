@@ -1,0 +1,67 @@
+### Coleção de requisições (VS Code REST Client / Visual Studio / Rider)
+
+@base = http://localhost:5073
+@key = troque-esta-chave-em-producao
+
+### Status do serviço
+GET {{base}}/health
+
+### Listar produtos com estoque
+GET {{base}}/api/produtos?somenteComEstoque=true
+X-Api-Key: {{key}}
+
+### Buscar produto
+GET {{base}}/api/produtos/PA0002
+X-Api-Key: {{key}}
+
+### Cadastrar produto
+POST {{base}}/api/produtos
+X-Api-Key: {{key}}
+Content-Type: application/json
+
+{
+  "codigo": "PA0100",
+  "descricao": "Interruptor simples 10A",
+  "unidade": "UN",
+  "precoVenda": 9.90,
+  "estoque": 50
+}
+
+### Ajustar estoque (entrada)
+POST {{base}}/api/produtos/PA0005/ajuste-estoque
+X-Api-Key: {{key}}
+Content-Type: application/json
+
+{
+  "quantidade": 20,
+  "motivo": "Recebimento de nota fiscal de compra"
+}
+
+### Listar clientes
+GET {{base}}/api/clientes
+X-Api-Key: {{key}}
+
+### Incluir pedido de venda
+POST {{base}}/api/pedidos
+X-Api-Key: {{key}}
+Content-Type: application/json
+
+{
+  "codigoCliente": "C00001",
+  "itens": [
+    { "codigoProduto": "PA0002", "quantidade": 10 },
+    { "codigoProduto": "PA0003", "quantidade": 20 }
+  ]
+}
+
+### Listar pedidos em aberto
+GET {{base}}/api/pedidos?status=Aberto
+X-Api-Key: {{key}}
+
+### Faturar pedido
+POST {{base}}/api/pedidos/000001/faturar
+X-Api-Key: {{key}}
+
+### Cancelar pedido (estorna o estoque)
+POST {{base}}/api/pedidos/000001/cancelar
+X-Api-Key: {{key}}
